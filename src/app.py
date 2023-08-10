@@ -34,8 +34,11 @@ class Worker:
 
         @app.on_message(filters.private)
         async def my_handler(client: T_client, message: Message):
-            if (l := len(message.text)) >= 4 and l <= 5:
-                await self.check_command(chat_id=message.chat.id, text=message.text)
+            try:
+                if (l := len(message.text)) >= 4 and l <= 5:
+                    await self.check_command(chat_id=message.chat.id, text=message.text)
+            except TypeError as e:
+                print(f"Error: {e}")
 
             if self.status and message.from_user.id != client.me.id:
                 await app.send_message(chat_id=message.chat.id, text=self.settings.message_answer)
